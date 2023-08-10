@@ -6,6 +6,4 @@ The "Airbnb Clone" project is a web application inspired by the popular vacation
 
 1. Clone this repository
 
-```
-	Coming Soon
-```
+> <p size="10" color="springgreen">Coming Soon</p>
