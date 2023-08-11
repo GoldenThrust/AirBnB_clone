@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Unitest for Base Model """
+""" Unitest for Base Model class """
 
 import re
 import uuid
@@ -21,6 +21,17 @@ class test_baseModel(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_init(self):
+        """ Test __init__ when a kwargs is pass to base model """
+        my_model = BaseModel()
+        my_model.name = "My_First_Model"
+        my_model.my_number = 89
+        my_model_json = my_model.to_dict()
+        my_new_model = BaseModel(**my_model_json)
+
+        self.assertEqual(my_model.id, my_new_model.id)
+        self.assertIsInstance(my_new_model.created_at, datetime)
+
     def test_id(self):
         """ Test base model id """
         new_models_id = BaseModel().id
@@ -38,7 +49,7 @@ class test_baseModel(unittest.TestCase):
         self.assertEqual(models.updated_at.isoformat()[:16], datetime.today().isoformat()[:16])
     
     def test_save(self):
-        """ Test method save() """
+        """ Test for save() """
         new_model = BaseModel()
         old_created_time = new_model.created_at
         old_updated_time = new_model.updated_at
@@ -50,7 +61,7 @@ class test_baseModel(unittest.TestCase):
         self.assertEqual(old_created_time, new_created_time)
 
     def test_to_dict(self):
-        """ Test to dictionary """
+        """ Test for to_dict() """
         iso_pattern = r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}$'
         obj_dict = models.to_dict()
         self.assertIsInstance(obj_dict, dict)
@@ -70,3 +81,4 @@ class test_baseModel(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
