@@ -1,9 +1,16 @@
 #!/usr/bin/python3
-""" 
+"""
     File Storage class for the airbnb
 """
 import json
+from models.user import User
+from models.city import City
+from models.state import State
+from models.place import Place
+from models.review import Review
+from models.amenity import Amenity
 from models.base_model import BaseModel
+
 
 class FileStorage:
     """
@@ -16,7 +23,13 @@ class FileStorage:
         self.__file_path = "airbnb.json"
         self.__objects = {}
         self.__class_object = {
-            "BaseModel": BaseModel
+            "User": User,
+            "City": City,
+            "State": State,
+            "Place": Place,
+            "Review": Review,
+            "Amenity": Amenity,
+            "BaseModel": BaseModel,
         }
 
     def all(self):
@@ -30,7 +43,10 @@ class FileStorage:
     def save(self):
         """ serializes __objects to the JSON file (path: __file_path) """
 
-        airbnb_objdict = {keys: self.__objects[keys].to_dict() for keys in self.__objects.keys()}
+        airbnb_objdict = {
+            keys:
+            self.__objects[keys].to_dict() for keys in self.__objects.keys()
+            }
         with open(self.__file_path, "w") as f:
             json.dump(airbnb_objdict, f)
 
@@ -48,4 +64,3 @@ class FileStorage:
                         self.new(new_obj)
         except FileNotFoundError:
             pass
-

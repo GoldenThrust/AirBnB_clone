@@ -11,9 +11,7 @@ models = BaseModel()
 
 
 class test_baseModel(unittest.TestCase):
-    """
-        test cases
-    """
+    """ test cases """
 
     def setUp(self):
         pass
@@ -42,12 +40,14 @@ class test_baseModel(unittest.TestCase):
 
     def test_created_at(self):
         """ Test time created """
-        self.assertEqual(models.created_at.isoformat()[:16], datetime.today().isoformat()[:16])
+        self.assertEqual(models.created_at.isoformat()[
+                         :16], datetime.today().isoformat()[:16])
 
     def test_updated_at(self):
         """ Test time created """
-        self.assertEqual(models.updated_at.isoformat()[:16], datetime.today().isoformat()[:16])
-    
+        self.assertEqual(models.updated_at.isoformat()[
+                         :16], datetime.today().isoformat()[:16])
+
     def test_save(self):
         """ Test for save() """
         new_model = BaseModel()
@@ -79,6 +79,6 @@ class test_baseModel(unittest.TestCase):
         else:
             self.assertFalse(True)
 
+
 if __name__ == "__main__":
     unittest.main()
-

@@ -35,7 +35,7 @@ class test_filestorage(unittest.TestCase):
     def test_new(self):
         """ Test new() """
         storage.new(models)
-        self.assertTrue(storage.all()) # check if empty
+        self.assertTrue(storage.all())  # check if empty
 
     def test_save(self):
         storage.save()
@@ -47,4 +47,3 @@ class test_filestorage(unittest.TestCase):
         for obj_id in all_objs.keys():
             obj = all_objs[obj_id]
             self.assertIsInstance(obj, object)
-
