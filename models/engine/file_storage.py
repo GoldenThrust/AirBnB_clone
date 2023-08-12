@@ -22,15 +22,6 @@ class FileStorage:
         """ initialize new instance of filestorage """
         self.__file_path = "file.json"
         self.__objects = {}
-        self.__class_object = {
-            "User": User,
-            "City": City,
-            "State": State,
-            "Place": Place,
-            "Review": Review,
-            "Amenity": Amenity,
-            "BaseModel": BaseModel
-        }
 
     def all(self):
         """ returns the dictionary __objects """
@@ -52,13 +43,24 @@ class FileStorage:
 
     def reload(self):
         """ deserializes the JSON file to __objects """
+
+        class_object = {
+            "User": User,
+            "City": City,
+            "State": State,
+            "Place": Place,
+            "Review": Review,
+            "Amenity": Amenity,
+            "BaseModel": BaseModel
+        }
+
         try:
             with open(self.__file_path, "r") as f:
                 airbnb_dict = json.load(f)
                 for values in airbnb_dict.values():
                     cls_name = values["__class__"]
-                    if cls_name in self.__class_object:
-                        cls = self.__class_object[cls_name]
+                    if cls_name in class_object:
+                        cls = class_object[cls_name]
                         del values["__class__"]
                         new_obj = cls(**values)
                         self.new(new_obj)
