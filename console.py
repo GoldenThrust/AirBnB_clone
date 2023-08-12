@@ -88,7 +88,9 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, arg):
-        """ Creates a new instance of BaseModel, saves it and prints the id
+        """
+         Creates a new instance of BaseModel,
+         saves it (to the JSON file) and prints the id
         """
         args = arg.split()
 
@@ -100,7 +102,10 @@ class HBNBCommand(cmd.Cmd):
         print(models.id)
 
     def do_show(self, arg):
-        """ Prints the string representation of an instance """
+        """
+         Prints the string representation of an
+         instance based on the class name and id
+        """
         args = arg.split()
 
         if not validate_cls(args, self.__class_object, True):
@@ -117,7 +122,10 @@ class HBNBCommand(cmd.Cmd):
         print(new_obj)
 
     def do_destroy(self, arg):
-        """ Deletes an instance based on the class name and id """
+        """
+          Deletes an instance based on the class
+          name and id (save the change into the JSON file)
+        """
         args = arg.split()
 
         if not validate_cls(args, self.__class_object, True):
@@ -135,7 +143,10 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def do_all(self, arg):
-        """  Prints all string representation of all instances """
+        """
+          Prints all string representation of all instances
+          based or not on the class name
+        """
         args = arg.split()
         obj_dict = storage.all()
 
@@ -145,14 +156,14 @@ class HBNBCommand(cmd.Cmd):
             if args[0] not in self.__class_object:
                 print("** class doesn't exist **")
                 return
-
-            print(["{}".format(str(values)) for values in obj_dict.values()
+            print(["{}".format(str(values))
+                  for values in obj_dict.values()
                    if type(values).__name__ == args[0]])
 
     def do_update(self, arg):
         """
-        Updates an instance based on the
-        class name and id by adding or updating attribute
+          Updates an instance based on the class name
+          and id by adding or updating attribute
         """
         args = arg.split()
 

@@ -18,7 +18,7 @@ class test_filestorage(unittest.TestCase):
 
     def tearDown(self):
         try:
-            os.remove("airbnb.json")
+            os.remove("file.json")
         except IOError:
             pass
 
@@ -39,7 +39,7 @@ class test_filestorage(unittest.TestCase):
 
     def test_save(self):
         storage.save()
-        filename = "airbnb.json"
+        filename = "file.json"
         self.assertTrue(os.path.exists(filename))
 
     def test_reload(self):
