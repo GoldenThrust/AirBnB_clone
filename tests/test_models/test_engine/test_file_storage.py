@@ -18,7 +18,7 @@ class test_filestorage(unittest.TestCase):
 
     def tearDown(self):
         try:
-            os.remove("airbnb.json")
+            os.remove("file.json")
         except IOError:
             pass
 

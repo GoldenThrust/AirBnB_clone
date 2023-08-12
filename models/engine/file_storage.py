@@ -20,7 +20,7 @@ class FileStorage:
 
     def __init__(self):
         """ initialize new instance of filestorage """
-        self.__file_path = "airbnb.json"
+        self.__file_path = "file.json"
         self.__objects = {}
         self.__class_object = {
             "User": User,
