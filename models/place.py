@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-""" Define place """
+"""  """
 
 from models.base_model import BaseModel
 
 
 class Place(BaseModel):
-    """ Represent place """
+    """  """
 
     def __init__(self):
         super().__init__()

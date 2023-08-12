@@ -29,7 +29,7 @@ class FileStorage:
             "Place": Place,
             "Review": Review,
             "Amenity": Amenity,
-            "BaseModel": BaseModel,
+            "BaseModel": BaseModel
         }
 
     def all(self):
@@ -46,7 +46,7 @@ class FileStorage:
         airbnb_objdict = {
             keys:
             self.__objects[keys].to_dict() for keys in self.__objects.keys()
-            }
+        }
         with open(self.__file_path, "w") as f:
             json.dump(airbnb_objdict, f)
 
