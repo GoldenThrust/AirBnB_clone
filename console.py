@@ -13,7 +13,7 @@ from models.amenity import Amenity
 from models.base_model import BaseModel
 
 
-def validate_cls(args, cls, id=False) -> bool:
+def validate_cls(args, cls, id=False):
     """ validate HBNBCommand method argument """
     if not args:
         print("** class name missing **")
@@ -76,6 +76,30 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
 
+    def default(self, arg):
+        regex = re.search(r"\.", arg)
+
+        console_arg_dict = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "count": self.do_count,
+            "update": self.do_update
+        }
+
+        if regex:
+            matchs = regex.span()
+            args = [arg[:matchs[0]], arg[matchs[1]:]]
+            regex = re.search(r"\((.*?)\)", args[1])
+            if regex:
+                console_command = [args[1][:regex.span()[0]],
+                                   regex.group()[1:-1]]
+                if console_command[0] in console_arg_dict.keys():
+                    execute_args = "{} {}".format(args[0], console_command[1])
+                    return console_arg_dict[console_command[0]](execute_args)
+
+        return super().default(str(arg))
+
     def emptyline(self):
         """ Do nothing """
         pass
@@ -90,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """
-         Creates a new instance of BaseModel,
+         Creates a new instance of BaseModelB%K,
          saves it (to the JSON file) and prints the id
         """
         args = arg.split()
@@ -160,6 +184,16 @@ class HBNBCommand(cmd.Cmd):
             print(["{}".format(str(values))
                   for values in obj_dict.values()
                    if type(values).__name__ == args[0]])
+
+    def do_count(self, arg):
+        args = arg.split()
+        obj_dict = storage.all()
+        count = 0
+
+        for values in obj_dict.values():
+            if args[0] == values.__class__.__name__:
+                count += 1
+        print(count)
 
     def do_update(self, arg):
         """
