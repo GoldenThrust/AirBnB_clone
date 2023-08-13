@@ -11,6 +11,16 @@ from models.review import Review
 from models.amenity import Amenity
 from models.base_model import BaseModel
 
+class_object = {
+    "User": User,
+    "City": City,
+    "State": State,
+    "Place": Place,
+    "Review": Review,
+    "Amenity": Amenity,
+    "BaseModel": BaseModel
+}
+
 
 class FileStorage:
     """
@@ -18,51 +28,39 @@ class FileStorage:
         deserializes JSON file to instances
     """
 
-    def __init__(self):
-        """ initialize new instance of filestorage """
-        self.__file_path = "file.json"
-        self.__objects = {}
+    __file_path = "file.json"
+    __objects = {}
 
     def all(self):
         """ returns the dictionary __objects """
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """ sets in __objects the obj with key <obj class name>.id """
-        self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
+        FileStorage.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
         """ serializes __objects to the JSON file (path: __file_path) """
 
         airbnb_objdict = {
             keys:
-            self.__objects[keys].to_dict() for keys in self.__objects.keys()
+            values.to_dict() for keys, values in FileStorage.__objects.items()
         }
-        with open(self.__file_path, "w") as f:
+        with open(FileStorage.__file_path, "w") as f:
             json.dump(airbnb_objdict, f)
 
     def reload(self):
         """ deserializes the JSON file to __objects """
-
-        class_object = {
-            "User": User,
-            "City": City,
-            "State": State,
-            "Place": Place,
-            "Review": Review,
-            "Amenity": Amenity,
-            "BaseModel": BaseModel
-        }
-
         try:
-            with open(self.__file_path, "r") as f:
+            with open(FileStorage.__file_path, "r") as f:
                 airbnb_dict = json.load(f)
                 for values in airbnb_dict.values():
                     cls_name = values["__class__"]
+                    print(cls_name)
                     if cls_name in class_object:
                         cls = class_object[cls_name]
                         del values["__class__"]
                         new_obj = cls(**values)
-                        self.new(new_obj)
+                        FileStorage.new(new_obj)
         except FileNotFoundError:
             pass
