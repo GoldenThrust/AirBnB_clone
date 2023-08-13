@@ -58,6 +58,7 @@ def parse_type(arg):
     else:
         return parsed
 
+
 class_object = {
         "Amenity": Amenity,
         "User": User,
