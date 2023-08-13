@@ -93,7 +93,7 @@ class HBNBCommand(cmd.Cmd):
             regex = re.search(r"\((.*?)\)", args[1])
             if regex:
                 console_command = [
-                    args[1][:regex.span()[0]], regex.group()[1:-1]]
+                    args[1][:regex.span()[0]], re.sub(",", "",re.sub("\"", "", regex.group()[1:-1]))]
                 if console_command[0] in console_arg_dict.keys():
                     execute_args = "{} {}".format(args[0], console_command[1])
                     return console_arg_dict[console_command[0]](execute_args)
@@ -220,7 +220,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 3:
             print("** value missing **")
             return
-
+        
         if args[2] in obj_dict[key].__class__.__dict__.keys():
             val_type = type(obj_dict[key].__class__.__dict__[args[2]])
             obj_dict[key].__dict__[args[2]] = parse_type(val_type(args[3]))
