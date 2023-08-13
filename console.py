@@ -49,25 +49,25 @@ def is_int(typ):
 
 def parse_type(arg):
     """ parse arg to an to basic type """
-    parsed = re.sub("\"", "", arg)
+    argv = re.sub("\"", "", arg)
 
-    if is_int(parsed):
-        return int(parsed)
-    elif is_float(parsed):
-        return float(parsed)
+    if is_int(argv):
+        return int(argv)
+    elif is_float(argv):
+        return float(argv)
     else:
-        return parsed
+        return str(argv)
 
 
 class_object = {
-        "Amenity": Amenity,
-        "User": User,
-        "City": City,
-        "State": State,
-        "Place": Place,
-        "Review": Review,
-        "Amenity": Amenity,
-        "BaseModel": BaseModel,
+    "Amenity": Amenity,
+    "User": User,
+    "City": City,
+    "State": State,
+    "Place": Place,
+    "Review": Review,
+    "Amenity": Amenity,
+    "BaseModel": BaseModel,
 }
 
 
@@ -92,8 +92,8 @@ class HBNBCommand(cmd.Cmd):
             args = [arg[:matchs[0]], arg[matchs[1]:]]
             regex = re.search(r"\((.*?)\)", args[1])
             if regex:
-                console_command = [args[1][:regex.span()[0]],
-                                   regex.group()[1:-1]]
+                console_command = [
+                    args[1][:regex.span()[0]], regex.group()[1:-1]]
                 if console_command[0] in console_arg_dict.keys():
                     execute_args = "{} {}".format(args[0], console_command[1])
                     return console_arg_dict[console_command[0]](execute_args)
@@ -223,7 +223,7 @@ class HBNBCommand(cmd.Cmd):
 
         if args[2] in obj_dict[key].__class__.__dict__.keys():
             val_type = type(obj_dict[key].__class__.__dict__[args[2]])
-            obj_dict[key].__dict__[args[2]] = val_type
+            obj_dict[key].__dict__[args[2]] = parse_type(val_type(args[3]))
         else:
             obj_dict[key].__dict__[args[2]] = parse_type(args[3])
         storage.save()
