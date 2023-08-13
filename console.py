@@ -13,7 +13,7 @@ from models.amenity import Amenity
 from models.base_model import BaseModel
 
 
-def validate_cls(args, cls, id=False) -> bool:
+def validate_cls(args, cls, id=False):
     """ validate HBNBCommand method argument """
     if not args:
         print("** class name missing **")
@@ -49,31 +49,56 @@ def is_int(typ):
 
 def parse_type(arg):
     """ parse arg to an to basic type """
-    parsed = re.sub("\"", "", arg)
+    argv = re.sub("\"", "", arg)
 
-    if is_int(parsed):
-        return int(parsed)
-    elif is_float(parsed):
-        return float(parsed)
+    if is_int(argv):
+        return int(argv)
+    elif is_float(argv):
+        return float(argv)
     else:
-        return parsed
+        return str(argv)
+
+
+class_object = {
+    "Amenity": Amenity,
+    "User": User,
+    "City": City,
+    "State": State,
+    "Place": Place,
+    "Review": Review,
+    "Amenity": Amenity,
+    "BaseModel": BaseModel,
+}
 
 
 class HBNBCommand(cmd.Cmd):
     """ command interpreter """
 
-    def __init__(self):
-        super().__init__()
-        self.prompt = "(hbnb) "
-        self.__class_object = {
-            "User": User,
-            "City": City,
-            "State": State,
-            "Place": Place,
-            "Review": Review,
-            "Amenity": Amenity,
-            "BaseModel": BaseModel,
+    prompt = "(hbnb) "
+
+    def default(self, arg):
+        regex = re.search(r"\.", arg)
+
+        console_arg_dict = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "count": self.do_count,
+            "update": self.do_update
         }
+
+        if regex:
+            matchs = regex.span()
+            args = [arg[:matchs[0]], arg[matchs[1]:]]
+            regex = re.search(r"\((.*?)\)", args[1])
+            if regex:
+                console_command = [
+                    args[1][:regex.span()[0]], re.sub(",", "",re.sub("\"", "", regex.group()[1:-1]))]
+                if console_command[0] in console_arg_dict.keys():
+                    execute_args = "{} {}".format(args[0], console_command[1])
+                    return console_arg_dict[console_command[0]](execute_args)
+
+        return super().default(str(arg))
 
     def emptyline(self):
         """ Do nothing """
@@ -89,15 +114,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """
-         Creates a new instance of BaseModel,
+         Creates a new instance of BaseModelB%K,
          saves it (to the JSON file) and prints the id
         """
         args = arg.split()
 
-        if not validate_cls(args, self.__class_object):
+        if not validate_cls(args, class_object):
             return
 
-        models = self.__class_object[args[0]]()
+        models = class_object[args[0]]()
         storage.save()
         print(models.id)
 
@@ -108,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
         """
         args = arg.split()
 
-        if not validate_cls(args, self.__class_object, True):
+        if not validate_cls(args, class_object, True):
             return
 
         obj_dict = storage.all()
@@ -128,7 +153,7 @@ class HBNBCommand(cmd.Cmd):
         """
         args = arg.split()
 
-        if not validate_cls(args, self.__class_object, True):
+        if not validate_cls(args, class_object, True):
             return
 
         obj_dict = storage.all()
@@ -153,12 +178,22 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print(["{}".format(str(values)) for values in obj_dict.values()])
         else:
-            if args[0] not in self.__class_object:
+            if args[0] not in class_object:
                 print("** class doesn't exist **")
                 return
             print(["{}".format(str(values))
                   for values in obj_dict.values()
                    if type(values).__name__ == args[0]])
+
+    def do_count(self, arg):
+        args = arg.split()
+        obj_dict = storage.all()
+        count = 0
+
+        for values in obj_dict.values():
+            if args[0] == values.__class__.__name__:
+                count += 1
+        print(count)
 
     def do_update(self, arg):
         """
@@ -167,7 +202,7 @@ class HBNBCommand(cmd.Cmd):
         """
         args = arg.split()
 
-        if not validate_cls(args, self.__class_object, True):
+        if not validate_cls(args, class_object, True):
             return
 
         obj_dict = storage.all()
@@ -185,10 +220,10 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 3:
             print("** value missing **")
             return
-
+        
         if args[2] in obj_dict[key].__class__.__dict__.keys():
             val_type = type(obj_dict[key].__class__.__dict__[args[2]])
-            obj_dict[key].__dict__[args[2]] = val_type
+            obj_dict[key].__dict__[args[2]] = parse_type(val_type(args[3]))
         else:
             obj_dict[key].__dict__[args[2]] = parse_type(args[3])
         storage.save()

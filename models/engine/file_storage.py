@@ -11,6 +11,16 @@ from models.review import Review
 from models.amenity import Amenity
 from models.base_model import BaseModel
 
+class_object = {
+    "User": User,
+    "City": City,
+    "State": State,
+    "Place": Place,
+    "Review": Review,
+    "Amenity": Amenity,
+    "BaseModel": BaseModel
+}
+
 
 class FileStorage:
     """
@@ -18,10 +28,8 @@ class FileStorage:
         deserializes JSON file to instances
     """
 
-    def __init__(self):
-        """ initialize new instance of filestorage """
-        self.__file_path = "file.json"
-        self.__objects = {}
+    __file_path = "file.json"
+    __objects = {}
 
     def all(self):
         """ returns the dictionary __objects """
@@ -43,17 +51,6 @@ class FileStorage:
 
     def reload(self):
         """ deserializes the JSON file to __objects """
-
-        class_object = {
-            "User": User,
-            "City": City,
-            "State": State,
-            "Place": Place,
-            "Review": Review,
-            "Amenity": Amenity,
-            "BaseModel": BaseModel
-        }
-
         try:
             with open(self.__file_path, "r") as f:
                 airbnb_dict = json.load(f)
