@@ -56,7 +56,6 @@ class FileStorage:
                 airbnb_dict = json.load(f)
                 for values in airbnb_dict.values():
                     cls_name = values["__class__"]
-                    print(cls_name)
                     if cls_name in class_object:
                         cls = class_object[cls_name]
                         del values["__class__"]
