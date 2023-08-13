@@ -44,7 +44,7 @@ class FileStorage:
 
         airbnb_objdict = {
             keys:
-            values.to_dict() for keys, values in FileStorage.__objects.items()
+            self.__objects[keys].to_dict() for keys in FileStorage.__objects.keys()
         }
         with open(FileStorage.__file_path, "w") as f:
             json.dump(airbnb_objdict, f)
