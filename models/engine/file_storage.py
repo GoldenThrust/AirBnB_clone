@@ -60,6 +60,6 @@ class FileStorage:
                         cls = class_object[cls_name]
                         del values["__class__"]
                         new_obj = cls(**values)
-                        FileStorage.new(new_obj)
+                        self.new(new_obj)
         except FileNotFoundError:
             pass
