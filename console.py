@@ -58,22 +58,22 @@ def parse_type(arg):
     else:
         return parsed
 
+class_object = {
+        "Amenity": Amenity,
+        "User": User,
+        "City": City,
+        "State": State,
+        "Place": Place,
+        "Review": Review,
+        "Amenity": Amenity,
+        "BaseModel": BaseModel,
+}
+
 
 class HBNBCommand(cmd.Cmd):
     """ command interpreter """
 
-    def __init__(self):
-        super().__init__()
-        self.prompt = "(hbnb) "
-        self.__class_object = {
-            "User": User,
-            "City": City,
-            "State": State,
-            "Place": Place,
-            "Review": Review,
-            "Amenity": Amenity,
-            "BaseModel": BaseModel,
-        }
+    prompt = "(hbnb) "
 
     def emptyline(self):
         """ Do nothing """
@@ -94,10 +94,10 @@ class HBNBCommand(cmd.Cmd):
         """
         args = arg.split()
 
-        if not validate_cls(args, self.__class_object):
+        if not validate_cls(args, class_object):
             return
 
-        models = self.__class_object[args[0]]()
+        models = class_object[args[0]]()
         storage.save()
         print(models.id)
 
@@ -108,7 +108,7 @@ class HBNBCommand(cmd.Cmd):
         """
         args = arg.split()
 
-        if not validate_cls(args, self.__class_object, True):
+        if not validate_cls(args, class_object, True):
             return
 
         obj_dict = storage.all()
@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
         """
         args = arg.split()
 
-        if not validate_cls(args, self.__class_object, True):
+        if not validate_cls(args, class_object, True):
             return
 
         obj_dict = storage.all()
@@ -153,7 +153,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print(["{}".format(str(values)) for values in obj_dict.values()])
         else:
-            if args[0] not in self.__class_object:
+            if args[0] not in class_object:
                 print("** class doesn't exist **")
                 return
             print(["{}".format(str(values))
@@ -167,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
         """
         args = arg.split()
 
-        if not validate_cls(args, self.__class_object, True):
+        if not validate_cls(args, class_object, True):
             return
 
         obj_dict = storage.all()
