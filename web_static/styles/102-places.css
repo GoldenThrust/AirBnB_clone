@@ -1,0 +1,124 @@
+.places {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    z-index: -1;
+}
+
+.places h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 30px;
+}
+
+.places article {
+    position: relative;
+    top: 90px;
+    width: 390px;
+    padding: 20px;
+    margin: 20px;
+    border: 1px #FF5A5F solid;
+    border-radius: 4px;
+}
+
+.places h2 {
+    margin: 0;
+    font-size: 30px;
+    text-align: center;
+}
+
+.price_by_night {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FF5A5F;
+    border: 4px #FF5A5F solid;
+    border-radius: 50%;
+    min-width: 60px;
+    aspect-ratio: 1;
+    font-size: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.information {
+    display: flex;
+    justify-content: space-around;
+    height: 80px;
+    border: solid #DDDDDD;
+    border-width: 1px 0;
+    margin-top: 10%;
+
+}
+
+.information * {
+    display: flex;
+    align-items: flex-end;
+    height: 90%;
+}
+
+.information .max_guest {
+    background: url("../images/icon_group.png") center no-repeat;
+}
+.information .number_rooms{
+    background: url("../images/icon_bed.png") center no-repeat;
+}
+.information .number_bathromms{
+    background: url("../images/icon_bath.png") center no-repeat;
+}
+
+.user {
+    margin: 10px 0;
+}
+
+.user span{
+    font-weight: bold;
+}
+
+.places .amenities, .places .reviews {
+    width: 100%;
+    margin-top: 40px;
+    padding: 0;
+}
+
+.places .amenities h2, .places .reviews h2 {
+    font-size: 16px;
+    border-bottom: #DDDDDD 1px solid;
+    text-align: start;
+    padding-bottom: 10px;
+}
+
+.places .amenities ul, .places .reviews ul {
+    list-style: none;
+    padding: 0;
+}
+
+.places .amenities li {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.places .amenities .tv {
+    background: url("../images/icon_tv.png") left/contain no-repeat;
+}
+
+.places .amenities .wifi {
+    background: url("../images/icon_wifi.png") left/contain no-repeat;
+}
+
+.places .amenities .pets {
+    background: url("../images/icon_pets.png") left/contain no-repeat;
+}
+
+.places .reviews ul h3 {
+    font-size: 14px;
+}
+
+.places .reviews ul p {
+    font-size: 12px;
+}

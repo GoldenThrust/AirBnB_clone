@@ -93,7 +93,9 @@ class HBNBCommand(cmd.Cmd):
             regex = re.search(r"\((.*?)\)", args[1])
             if regex:
                 console_command = [
-                    args[1][:regex.span()[0]], re.sub(",", "",re.sub("\"", "", regex.group()[1:-1]))]
+                    args[1][:regex.span()[0]],
+                    re.sub(",", "", re.sub("\"", "", regex.group()[1:-1]))
+                    ]
                 if console_command[0] in console_arg_dict.keys():
                     execute_args = "{} {}".format(args[0], console_command[1])
                     return console_arg_dict[console_command[0]](execute_args)
@@ -213,19 +215,44 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return
 
-        if len(args) == 2:
+        pattern = r'{(.*?)}'
+
+        dict_like_string = ' '.join(args[2:])
+
+        if re.search(pattern, dict_like_string):
+            matches = re.findall(pattern, dict_like_string)
+
+            split_arg = matches[0].split()
+            dict_data = {}
+            i = 0
+            while (i < len(split_arg)):
+                dict_data[re.sub("[:']", "", parse_type(
+                    split_arg[i]))] = parse_type(split_arg[i+1])
+                i += 2
+
+            for keys, values in dict_data.items():
+                print(keys, values)
+                if keys in obj_dict[key].__class__.__dict__.keys():
+                    val_type = type(obj_dict[key].__class__.__dict__[keys])
+                    obj_dict[key].__dict__[keys] = val_type(values)
+                else:
+                    obj_dict[key].__dict__[keys] = values
+            storage.save()
+            return
+        elif len(args) == 2:
             print("** attribute name missing **")
             return
 
         if len(args) == 3:
             print("** value missing **")
             return
-        
-        if args[2] in obj_dict[key].__class__.__dict__.keys():
-            val_type = type(obj_dict[key].__class__.__dict__[args[2]])
-            obj_dict[key].__dict__[args[2]] = parse_type(val_type(args[3]))
+
         else:
-            obj_dict[key].__dict__[args[2]] = parse_type(args[3])
+            if args[2] in obj_dict[key].__class__.__dict__.keys():
+                val_type = type(obj_dict[key].__class__.__dict__[args[2]])
+                obj_dict[key].__dict__[args[2]] = parse_type(val_type(args[3]))
+            else:
+                obj_dict[key].__dict__[args[2]] = parse_type(args[3])
         storage.save()
 
 
