@@ -48,7 +48,7 @@ def is_int(typ):
 
 
 def parse_type(arg):
-    """ parse arg to an to basic type """
+    """ parse arg to it type """
     argv = re.sub("\"", "", arg)
 
     if is_int(argv):
